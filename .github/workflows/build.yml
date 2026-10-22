@@ -1,0 +1,23 @@
+name: Build
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyserial pyinstaller
+      - run: pyinstaller --onefile --console --name switch_reset switch_reset.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: switch_reset-${{ matrix.os }}
+          path: dist/*
