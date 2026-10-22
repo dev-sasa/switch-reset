@@ -122,3 +122,7 @@ python switch_reset.py
 ## 7. Adding another switch type
 
 Add a new `Profil(...)` entry to the `PROFILE` list in `switch_reset.py`: baud rate, prompt pattern and the commands with the confirmation prompts to answer. If a model behaves differently than expected, `switch_reset.log` shows exactly what the switch answered.
+
+## Contributing / Feedback
+
+Missing your switch model or vendor? Found a bug? Open an [issue](../../issues) or send a pull request. If a model behaves differently than expected, attach your `switch_reset.log` (remove passwords and IP addresses first). That makes it easy to add or fix a profile.

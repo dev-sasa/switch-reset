@@ -122,3 +122,7 @@ python switch_reset.py
 ## 7. Weiteren Switch-Typ ergänzen
 
 In `switch_reset.py` einen neuen `Profil(...)`-Eintrag zur Liste `PROFILE` hinzufügen: Baudrate, Prompt-Muster und die Befehle mit den Rückfragen, die beantwortet werden müssen. Texte als Tupel `("Deutsch", "English")`. Verhält sich ein Modell anders als erwartet, zeigt `switch_reset.log` genau, was der Switch geantwortet hat.
+
+## Mitmachen / Feedback
+
+Dein Switch-Modell oder Hersteller fehlt? Fehler gefunden? Eröffne ein [Issue](../../issues) oder schick einen Pull Request. Wenn sich ein Modell anders verhält als erwartet, hänge deine `switch_reset.log` an (vorher Passwörter und IP-Adressen entfernen). Dann lässt sich ein Profil leicht ergänzen oder korrigieren.
