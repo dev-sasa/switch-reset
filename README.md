@@ -126,3 +126,7 @@ Add a new `Profil(...)` entry to the `PROFILE` list in `switch_reset.py`: baud r
 ## Contributing / Feedback
 
 Missing your switch model or vendor? Found a bug? Open an [issue](../../issues) or send a pull request. If a model behaves differently than expected, attach your `switch_reset.log` (remove passwords and IP addresses first). That makes it easy to add or fix a profile.
+
+---
+
+Created by [Sasa](https://sasa-dev.de)

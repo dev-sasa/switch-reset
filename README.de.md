@@ -126,3 +126,7 @@ In `switch_reset.py` einen neuen `Profil(...)`-Eintrag zur Liste `PROFILE` hinzu
 ## Mitmachen / Feedback
 
 Dein Switch-Modell oder Hersteller fehlt? Fehler gefunden? Eröffne ein [Issue](../../issues) oder schick einen Pull Request. Wenn sich ein Modell anders verhält als erwartet, hänge deine `switch_reset.log` an (vorher Passwörter und IP-Adressen entfernen). Dann lässt sich ein Profil leicht ergänzen oder korrigieren.
+
+---
+
+Erstellt von [Sasa](https://sasa-dev.de)
