@@ -1,40 +1,60 @@
-# Switch-Reset über Konsolenkabel
+# switch-reset
 
-Mit diesem Programm setzt du Switche auf Werkseinstellungen zurück. Du brauchst nur ein Konsolenkabel (USB-Seriell). Python musst du nicht installieren.
+**English** | [Deutsch](README.de.md)
 
-> **Achtung:** Die komplette Konfiguration des Switches wird gelöscht und der Switch startet neu. Das lässt sich nicht rückgängig machen.
+Factory-reset network switches over a serial console cable. The tool finds the cable automatically, asks which switch type is connected, logs in, wipes the configuration and reboots the switch. It runs on Windows, macOS and Linux and needs no Python installation when you use the prebuilt program.
 
-## 1. Was du brauchst
+> **Warning:** The complete configuration of the switch is erased and the switch reboots. This cannot be undone.
 
-- Den Switch, eingeschaltet
-- Ein Konsolenkabel:
-  - USB-Seriell-Adapter plus Rollover-Kabel (RJ45 auf Console-Port), oder
-  - Mini-USB-/USB-C-Kabel, wenn der Switch einen USB-Konsolenport hat
-- Die Programmdatei (kein Python nötig):
+> **Note:** The program is bilingual. At start you choose **Deutsch** or **English**.
+
+## Supported switches
+
+| No. | Type | Models (as far as known) | Default login (if needed) |
+|---|---|---|---|
+| 1 | Cisco IOS / IOS-XE | Catalyst 2960, 3560, 3750, 3850, 9200, 9300 | depends on configuration |
+| 2 | HP ProCurve / Aruba OS-Switch | 2530, 2540, 2920, 2930 | depends on configuration |
+| 3 | Aruba CX | 6100, 6200, 6300, 8xxx | `admin`, no password |
+| 4 | Juniper EX (Junos) | EX series | `root` |
+| 5 | Extreme EXOS / Switch Engine | X440, X450, X460, X620, X670 | `admin`, no password |
+| 6 | Arista EOS | 7010, 7050, 7060, 7280 | `admin`, no password |
+| 7 | Huawei VRP | S5700, S6700 | `admin` / `admin@huawei.com` |
+
+Not supported: Cisco Nexus/NX-OS, Cisco Small Business, Extreme VOSS/ERS, Netgear, TP-Link, D-Link, Dell, Ubiquiti, MikroTik, Ruckus/Brocade, Zyxel, Lancom.
+
+The commands are the standard ones for each platform but have not been tested on real hardware. Try it on a switch with nothing important on it first.
+
+## 1. What you need
+
+- The switch, powered on
+- A console cable:
+  - USB-to-serial adapter plus rollover cable (RJ45 to console port), or
+  - Mini-USB / USB-C cable if the switch has a USB console port
+- The program (no Python needed):
   - **Windows:** `switch_reset.exe`
   - **Mac / Linux:** `switch_reset`
-  - Download: GitHub-Reiter **Actions** → letzter Lauf → **Artifacts**. Oder selbst bauen (Abschnitt 6).
+  - Download: GitHub tab **Actions** → latest run → **Artifacts**. Or build it yourself (section 6).
 
-## 2. Kabel anschließen
+## 2. Connect the cable
 
-1. Kabel in den **CONSOLE**-Port des Switches stecken. Nicht in einen normalen LAN-Port und nicht in den Management-Port.
-2. USB-Seite in den Computer stecken.
-3. Switch einschalten. Nach dem Einschalten 1–2 Minuten warten, bis er gebootet hat.
+1. Plug the cable into the **CONSOLE** port of the switch, not into a normal LAN port or the management port.
+2. Plug the USB end into your computer.
+3. Power on the switch and wait 1–2 minutes until it has booted.
 
-**Treiber:** Meldet das Programm später „Kein Konsolenkabel gefunden“, fehlt evtl. ein Treiber. Gängige Chips sind FTDI, Prolific PL2303, Silicon Labs CP210x und WCH CH340. Bei Cisco-Mini-USB-Ports hilft der „Cisco USB Console Driver“. Windows-Hinweis: Im Gerätemanager unter „Anschlüsse (COM & LPT)“ muss das Kabel als COM-Port auftauchen.
+**Drivers:** If the program reports that no console cable was found, a driver may be missing. Common chips are FTDI, Prolific PL2303, Silicon Labs CP210x and WCH CH340. For Cisco mini-USB console ports, install the "Cisco USB Console Driver". On Windows, the cable must show up as a COM port in Device Manager under "Ports (COM & LPT)".
 
-## 3. Programm starten
+## 3. Start the program
 
 **Mac**
 
-Per Doppelklick auf `switch_reset`, oder im Terminal:
+Double-click `switch_reset`, or in the terminal:
 
 ```bash
-cd Pfad/zum/Ordner/mit/der/Datei
+cd path/to/the/folder
 ./switch_reset
 ```
 
-Beim ersten Start von einem fremden Mac blockiert macOS die Datei evtl. Dann Rechtsklick, „Öffnen“ und bestätigen. Oder im Terminal:
+If macOS blocks the file on first start (for example after a download), right-click it, choose "Open" and confirm. Or in the terminal:
 
 ```bash
 xattr -d com.apple.quarantine switch_reset
@@ -43,64 +63,62 @@ chmod +x switch_reset
 
 **Windows**
 
-Doppelklick auf `switch_reset.exe`. Bei der SmartScreen-Warnung auf „Weitere Informationen“ und dann „Trotzdem ausführen“ klicken.
+Double-click `switch_reset.exe`. If SmartScreen warns you, click "More info" and then "Run anyway".
 
-## 4. Bedienung
+**Linux**
 
-1. **Kabel wählen:** Das Programm listet alle gefundenen Kabel mit Nummer auf. Tippe die Nummer ein und drücke Enter.
-   - `R` sucht erneut, `Q` beendet.
-2. **Switch-Typ wählen:** Tippe die Nummer des Herstellers ein.
+```bash
+chmod +x switch_reset
+./switch_reset
+```
 
-   | Nr. | Typ | Login (falls nötig) |
-   |---|---|---|
-   | 1 | Cisco IOS / IOS-XE (Catalyst) | je nach Konfiguration |
-   | 2 | HP ProCurve / Aruba OS-Switch | je nach Konfiguration |
-   | 3 | Aruba CX | `admin`, ohne Passwort |
-   | 4 | Juniper EX | `root` |
-   | 5 | Extreme EXOS / Switch Engine | `admin`, ohne Passwort |
-   | 6 | Arista EOS | `admin`, ohne Passwort |
-   | 7 | Huawei VRP | `admin` / `admin@huawei.com` |
+If you get "permission denied" on the port, add yourself to the serial group and log in again: `sudo usermod -aG dialout $USER`.
 
-3. **Bestätigen:** Das Programm zeigt dir noch einmal Kabel, Typ und die Schritte. Tippe `JA` (Großbuchstaben) ein. Alles andere bricht ab, ohne etwas zu ändern.
-4. **Automatischer Ablauf:** Das Programm verbindet sich und probiert dabei bei Bedarf mehrere Baudraten durch. Danach meldet es sich am Switch an. Wenn nötig, fragt es dich nach Benutzername und Passwort. Die Passworteingabe bleibt unsichtbar, das ist normal. Zum Schluss löscht es die Konfiguration und startet den Switch neu.
-5. **Fertig:** Bei Erfolg steht „Reset-Befehle gesendet“ da. Der Neustart dauert etwa 2–5 Minuten. Erst danach kannst du dich wieder mit dem Switch verbinden.
+## 4. Usage
 
-## 5. Probleme und Lösungen
+1. **Choose the language:** `1` = Deutsch, `2` = English.
+2. **Choose the cable:** The program lists all console cables it found, with numbers. Type the number and press Enter. `R` searches again, `Q` quits.
+3. **Choose the switch type:** Type the number from the table above.
+4. **Confirm:** The program shows cable, type and the steps once more. Type `YES` (`JA` in German mode) to continue. Anything else cancels without changing anything.
+5. **Automatic run:** The program connects, tries several baud rates if needed, logs in (asking for username and password when required; typed passwords are invisible, which is normal), erases the configuration and reboots the switch.
+6. **Done:** On success it reports that the reset commands were sent. The reboot takes about 2–5 minutes. Wait before connecting to the switch again.
 
-Jeder Fehler erscheint rot auf dem Bildschirm und steht zusätzlich in der Datei `switch_reset.log` (neben dem Programm).
+## 5. Troubleshooting
 
-| Meldung | Ursache und Lösung |
+Every error is shown in red on screen and also written to `switch_reset.log` next to the program.
+
+| Problem | Cause and fix |
 |---|---|
-| Kein Konsolenkabel gefunden | Kabel nicht eingesteckt, Treiber fehlt oder Kabel defekt. USB-Port wechseln, Treiber installieren. |
-| Port ist belegt / Zugriff verweigert | Ein anderes Programm nutzt das Kabel (PuTTY, Tera Term, `screen`, Terminal-Tab). Dort die Verbindung schließen. Auf dem Mac zeigt `lsof /dev/cu.xxx`, wer den Port hält. |
-| Switch antwortet auf keiner Baudrate | Kabel steckt im falschen Port, Switch ist aus oder bootet noch, oder du nutzt ein normales LAN-Kabel statt eines Konsolenkabels. Außerdem kann das Kabel defekt sein. Bei Cisco hat der Mini-USB-Port Vorrang vor dem RJ45-Port. |
-| Antwort unleserlich | Falsche Baudrate oder defekter Adapter. Anderen Adapter probieren. |
-| Login abgelehnt / enable nicht akzeptiert | Passwort falsch oder unbekannt. Dann ist eine Passwort-Wiederherstellung am Gerät nötig (Reset-Taste oder ROMMON). Das kann das Programm nicht. |
-| Switch steht im ROMMON/Bootloader | Es ist kein gültiges Betriebssystem geladen. Image von Hand starten oder neu aufspielen. |
-| Befehl meldet Fehler | Wahrscheinlich falscher Switch-Typ gewählt. Neu starten und den richtigen Typ wählen. |
-| Verbindung verloren / Schreib-Timeout | Kabel wurde abgezogen oder wackelt. Der Switch kann in einem halben Zustand sein: neu verbinden und den Vorgang wiederholen. |
-| Timeout, Switch reagiert nicht mehr | Switch hängt oder bootet. Warten und noch einmal versuchen. |
-| Abbruch mit Strg+C | Der Switch kann in einem halben Zustand sein. Vorgang wiederholen. |
+| No console cable found | Cable not plugged in, driver missing or cable defective. Try another USB port and install the driver. |
+| Port busy / access denied | Another program is using the cable (PuTTY, Tera Term, `screen`, another terminal). Close that connection. On Mac, `lsof /dev/cu.xxx` shows who holds the port. |
+| Switch does not answer at any baud rate | Cable is in the wrong port, switch is off or still booting, or a normal LAN cable is used instead of a console cable. The cable may also be defective. On Cisco, the mini-USB port takes priority over RJ45. |
+| Unreadable answer | Wrong baud rate or defective adapter. Try another adapter. |
+| Login rejected / enable not accepted | Wrong or unknown password. Password recovery on the device is needed (reset button or ROMMON). The program cannot do this. |
+| Switch is in ROMMON / bootloader | No valid operating system is loaded. Boot an image manually or reflash. |
+| Command reports an error | Most likely the wrong switch type was chosen. Restart and pick the right one. |
+| Connection lost / write timeout | Cable was unplugged or is loose. The switch may be in a half-done state: reconnect and repeat. |
+| Timeout, switch stops responding | Switch is hanging or booting. Wait and try again. |
+| Aborted with Ctrl+C | The switch may be in a half-done state. Repeat the run. |
 
-## 6. Windows-Programm (.exe) selbst bauen
+## 6. Building the program yourself
 
-Das geht nicht auf dem Mac. Du brauchst einmalig einen Windows-PC mit Python:
+**Windows (`.exe`)** — must be built on Windows, once, with Python installed:
 
-1. Ordner auf den Windows-PC kopieren.
-2. `build_windows.bat` doppelklicken.
-3. Die fertige Datei liegt dann unter `dist\switch_reset.exe`. Kopiere sie auf beliebige Windows-PCs, dort braucht es kein Python.
+1. Copy the folder to the Windows PC.
+2. Double-click `build_windows.bat`.
+3. The result is `dist\switch_reset.exe`. Copy it to any Windows PC; no Python needed there.
 
-**Alternative (ohne eigenen Windows-PC):** Das Repo enthält `.github/workflows/build.yml`. GitHub baut bei jedem Push automatisch Windows-, Mac- und Linux-Version. Du findest sie unter **Actions** → Lauf auswählen → **Artifacts**.
+**Without your own Windows PC:** The repo contains `.github/workflows/build.yml`. On every push GitHub builds the Windows, Mac and Linux versions automatically. Find them under **Actions** → select a run → **Artifacts**.
 
-**Mac/Linux selbst bauen:** `./build_mac.sh` erzeugt `dist/switch_reset`.
+**Mac / Linux:** `./build_mac.sh` creates `dist/switch_reset`.
 
-**Mit Python direkt starten (ohne Bauen):**
+**Run directly with Python (no build):**
 
 ```bash
 pip install pyserial
 python switch_reset.py
 ```
 
-## 7. Hinweis zum Testen
+## 7. Adding another switch type
 
-Teste beim ersten Mal mit einem Switch, auf dem nichts Wichtiges läuft. Die Befehle sind die gängigen Standardbefehle, aber an deinen Modellen noch nicht erprobt. Wenn ein Modell anders reagiert, schick die Datei `switch_reset.log`, dann lässt sich das Programm anpassen.
+Add a new `Profil(...)` entry to the `PROFILE` list in `switch_reset.py`: baud rate, prompt pattern and the commands with the confirmation prompts to answer. If a model behaves differently than expected, `switch_reset.log` shows exactly what the switch answered.
