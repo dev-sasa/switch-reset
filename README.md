@@ -30,10 +30,11 @@ The commands are the standard ones for each platform but have not been tested on
 - A console cable:
   - USB-to-serial adapter plus rollover cable (RJ45 to console port), or
   - Mini-USB / USB-C cable if the switch has a USB console port
-- The program (no Python needed):
-  - **Windows:** `switch_reset.exe`
-  - **Mac / Linux:** `switch_reset`
-  - Download: GitHub tab **Actions** → latest run → **Artifacts**. Or build it yourself (section 6).
+- The program (no Python needed, nothing to build): download it from the
+  [latest release](../../releases/latest):
+  - **Windows:** `switch_reset-windows.exe`
+  - **macOS:** `switch_reset-macos`
+  - **Linux:** `switch_reset-linux`
 
 ## 2. Connect the cable
 
@@ -47,29 +48,29 @@ The commands are the standard ones for each platform but have not been tested on
 
 **Mac**
 
-Double-click `switch_reset`, or in the terminal:
+Double-click `switch_reset-macos`, or in the terminal:
 
 ```bash
 cd path/to/the/folder
-./switch_reset
+./switch_reset-macos
 ```
 
 If macOS blocks the file on first start (for example after a download), right-click it, choose "Open" and confirm. Or in the terminal:
 
 ```bash
-xattr -d com.apple.quarantine switch_reset
-chmod +x switch_reset
+xattr -d com.apple.quarantine switch_reset-macos
+chmod +x switch_reset-macos
 ```
 
 **Windows**
 
-Double-click `switch_reset.exe`. If SmartScreen warns you, click "More info" and then "Run anyway".
+Double-click `switch_reset-windows.exe`. If SmartScreen warns you, click "More info" and then "Run anyway".
 
 **Linux**
 
 ```bash
-chmod +x switch_reset
-./switch_reset
+chmod +x switch_reset-linux
+./switch_reset-linux
 ```
 
 If you get "permission denied" on the port, add yourself to the serial group and log in again: `sudo usermod -aG dialout $USER`.
@@ -100,7 +101,9 @@ Every error is shown in red on screen and also written to `switch_reset.log` nex
 | Timeout, switch stops responding | Switch is hanging or booting. Wait and try again. |
 | Aborted with Ctrl+C | The switch may be in a half-done state. Repeat the run. |
 
-## 6. Building the program yourself
+## 6. Building the program yourself (developers only)
+
+You do **not** need this to use the tool, just download the release above.
 
 **Windows (`.exe`)** — must be built on Windows, once, with Python installed:
 
@@ -108,7 +111,7 @@ Every error is shown in red on screen and also written to `switch_reset.log` nex
 2. Double-click `build_windows.bat`.
 3. The result is `dist\switch_reset.exe`. Copy it to any Windows PC; no Python needed there.
 
-**Without your own Windows PC:** The repo contains `.github/workflows/build.yml`. On every push GitHub builds the Windows, Mac and Linux versions automatically. Find them under **Actions** → select a run → **Artifacts**.
+**Without your own Windows PC:** The repo contains `.github/workflows/build.yml`. GitHub builds the Windows, Mac and Linux versions automatically. Pushing a version tag (e.g. `git tag v1.0.0 && git push origin v1.0.0`) publishes them as a release.
 
 **Mac / Linux:** `./build_mac.sh` creates `dist/switch_reset`.
 
